@@ -2,7 +2,7 @@
 import pandas as pd
 
 
-def recommender():
+def recommender(movieName):
     
   # Get the data
   column_names = ['user_id', 'item_id','rating','timestamp']
@@ -47,8 +47,8 @@ def recommender():
   starwars_user_ratings = moviemat['Star Wars (1977)']
   liarliar_user_ratings = moviemat['Liar Liar (1997)']
   
-  print(starwars_user_ratings.head())
-  print(liarliar_user_ratings.head())
+  # print(starwars_user_ratings.head())
+  # print(liarliar_user_ratings.head())
 
   # analysing correlation with similar movies
   similar_to_starwars = moviemat.corrwith(starwars_user_ratings)
@@ -63,15 +63,23 @@ def recommender():
   # print(corr_starwars.sort_values('Correlation', ascending = False).head(10))
   corr_starwars = corr_starwars.join(ratings['num of ratings'])
   
-  print(corr_starwars.head())
+  # print(corr_starwars.head())
   
-  print(corr_starwars[corr_starwars['num of ratings']>100].sort_values('Correlation', ascending = False).head())
+  # print(corr_starwars[corr_starwars['num of ratings']>100].sort_values('Correlation', ascending = False).head())
 
   # Similar movies as of liarliar
   corr_liarliar = pd.DataFrame(similar_to_liarliar, columns =['Correlation'])
   corr_liarliar.dropna(inplace = True)
   
   corr_liarliar = corr_liarliar.join(ratings['num of ratings'])
-  print(corr_liarliar[corr_liarliar['num of ratings']>100].sort_values('Correlation', ascending = False).head())
+  # print(corr_liarliar[corr_liarliar['num of ratings']>100].sort_values('Correlation', ascending = False).head())
 
-  return corr_liarliar[corr_liarliar['num of ratings']>100].sort_values('Correlation', ascending = False).head().to_json()
+  if (movieName == 'star wars'):
+    print('Star Wars')
+    return corr_starwars[corr_starwars['num of ratings']>100].sort_values('Correlation', ascending = False).head().to_json()
+  elif (movieName == 'liar liar'):
+    print('Liar Liar')
+    return corr_liarliar[corr_liarliar['num of ratings']>100].sort_values('Correlation', ascending = False).head().to_json()
+  else:
+    print('Other Movie')
+    return f'Sorry, movie {movieName} not found'
