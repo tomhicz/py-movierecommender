@@ -1,6 +1,6 @@
 from flask import Flask,request,jsonify
 #from flask_cors import CORS
-#from recommender import recommender
+from recommender import recommender
 
 
 app = Flask(__name__)
@@ -12,10 +12,11 @@ def home():
         
 @app.route('/movie', methods=['GET'])
 def recommend_movies():
-    #res = recommender()
+    res = recommender()
     #res = recommender(request.args.get('title'))
     return jsonify(res)
 
+#This runs on the local dev server only 
 if __name__=='__main__':
     app.run(port = 5000, debug = True)
 
