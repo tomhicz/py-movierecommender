@@ -1,6 +1,7 @@
 from flask import Flask,request,jsonify
 #from flask_cors import CORS
 from recommender import recommender
+from recommender2 import recommender2
 
 
 app = Flask(__name__)
@@ -14,6 +15,14 @@ def home():
 def recommend_movies():
     searchword = request.args.get('name', '')
     res = recommender(searchword)
+    #res = recommender(request.args.get('title'))
+    return jsonify(res)
+    #return f'you requested {searchword}'
+
+@app.route('/movies', methods=['GET'])
+def recommend_movies2():
+    searchword = request.args.get('name', '')
+    res = recommender2(searchword)
     #res = recommender(request.args.get('title'))
     return jsonify(res)
     #return f'you requested {searchword}'
